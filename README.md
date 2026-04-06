@@ -1,8 +1,8 @@
+# CCAPDEV - MCO3 - Group 9
+- `Flores, John Alec E.`
+- `Ramos, Xavier S.`
+  
 # VetStappen
-`CCAPDEV - MCO3 - Group 9`
-`- Flores, John Alec E.`
-`- Ramos, Xavier S.`
-
 VetStappen is a veterinary appointment reservation website developed for CCAPDEV. The system helps pet owners check appointment availability, reserve veterinary services, manage their bookings, and update their profile online. It also includes a staff side for handling walk-in clients and managing reservations.
 
 The website was built using Node.js, Express, MongoDB, Mongoose, and Handlebars, following a Model-View-Controller structure. Its main goal is to provide a simple and functional reservation system that is easy to use and easy to demonstrate.
