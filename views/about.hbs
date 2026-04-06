@@ -1,0 +1,58 @@
+<main>
+    <h1>About VetStappen</h1>
+    <div class="panel">
+        <p>
+            VetStappen is a veterinary appointment reservation system designed for pet owners and clinic staff. It supports
+            slot browsing, appointment booking, anonymous reservations with reference-code lookup, staff walk-ins, reservation
+            updates, and account management in one workflow.
+        </p>
+        <p>
+            The project follows a model-view-controller structure and stores application data in MongoDB through Mongoose.
+            Account-linked reservations use server-side session authentication, while anonymous bookings remain account-free and
+            are managed later through a reservation reference code plus email.
+        </p>
+    </div>
+
+    <section class="panel">
+        <h2>Why We Built This</h2>
+        <p>
+            Many clinics still rely on manual scheduling. That can cause double bookings, long waiting times, and poor visibility
+            of available slots. VetStappen centralizes the booking process so pet owners can reserve more confidently while staff
+            can monitor reservations, walk-ins, and no-shows more clearly.
+        </p>
+    </section>
+
+    <section class="panel">
+        <h2>Technologies, NPM Packages, and Third-Party Libraries Used</h2>
+        <ul class="info-list">
+            <li><strong>Node.js</strong> - JavaScript runtime used to run the server.</li>
+            <li><strong>Express</strong> - Handles routing, middleware, and HTTP request/response flow.</li>
+            <li><strong>Express Handlebars</strong> - Template engine used for server-rendered views.</li>
+            <li><strong>Mongoose</strong> - ODM used to define schemas and work with MongoDB collections.</li>
+            <li><strong>MongoDB</strong> - Primary database for users, clinics, reservations, and sessions.</li>
+            <li><strong>dotenv</strong> - Loads environment variables from the local <code>.env</code> file.</li>
+            <li><strong>cookie-parser</strong> - Reads browser cookies so the app can restore server-side sessions.</li>
+            <li><strong>multer</strong> - Handles avatar image uploads.</li>
+            <li><strong>mongodb-memory-server</strong> - Optional local fallback database for quick demos when a MongoDB URI is not configured.</li>
+            <li><strong>nodemon</strong> - Development convenience tool for auto-restarting the server while coding.</li>
+            <li><strong>Node.js built-in crypto module</strong> - Used for password hashing, session tokens, and anonymous reference code generation.</li>
+        </ul>
+    </section>
+
+    <section class="panel">
+        <h2>Our Web Developers</h2>
+        <div class="card-grid dev-grid">
+            <article class="team-card dev-card">
+                <img class="avatar" alt="Web Dev Alec" src="/images/alec.jpg">
+                <h3>Flores, John Alec E.</h3>
+                <p>Front-end, back-end, and UI implementation.</p>
+            </article>
+
+            <article class="team-card dev-card">
+                <img class="avatar" alt="Web Dev Xavier" src="/images/xavi.png">
+                <h3>Ramos, Xavier S.</h3>
+                <p>Front-end, back-end, and interactivity.</p>
+            </article>
+        </div>
+    </section>
+</main>

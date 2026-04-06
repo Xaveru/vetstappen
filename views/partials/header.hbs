@@ -1,0 +1,39 @@
+<header>
+    <div class="logo">
+        <a href="/">
+            <img src="/images/logo.png" alt="VetStappen Logo"/>
+        </a>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="/" {{{activeAttr currentPath '/'}}}>Home</a></li>
+            <li><a href="/services" {{{activeAttr currentPath '/services'}}}>Services</a></li>
+            <li><a href="/appointments" {{{activeAttr currentPath '/appointments'}}}>Appointments</a></li>
+            <li><a href="/reservations" {{{activeAttr currentPath '/reservations'}}}>Reservations</a></li>
+            <li><a href="/contact" {{{activeAttr currentPath '/contact'}}}>Contact Us</a></li>
+            <li><a href="/about" {{{activeAttr currentPath '/about'}}}>About Us</a></li>
+            {{#if currentUser.isStaff}}
+            <li><a href="/staff" {{{activeAttr currentPath '/staff'}}}>Staff Dashboard</a></li>
+            {{/if}}
+        </ul>
+    </nav>
+
+    <nav class="auth-nav">
+        <ul>
+            {{#if currentUser}}
+                <li><a href="/profile" {{{activeAttr currentPath '/profile'}}} id="nav-profile">My Account</a></li>
+                <li class="nav-separator" aria-hidden="true">|</li>
+                <li>
+                    <form id="logout-form" class="inline-form" action="/logout" method="POST">
+                        <button type="submit" class="nav-link-button" id="nav-logout">Logout</button>
+                    </form>
+                </li>
+            {{else}}
+                <li><a href="/login" {{{activeAttr currentPath '/login'}}} id="nav-login">Login</a></li>
+                <li class="nav-separator" aria-hidden="true">|</li>
+                <li><a href="/register" {{{activeAttr currentPath '/register'}}} id="nav-register">Register</a></li>
+            {{/if}}
+        </ul>
+    </nav>
+</header>

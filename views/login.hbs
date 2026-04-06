@@ -1,0 +1,39 @@
+<main class="auth-main">
+    <section class="panel narrow login-panel">
+        <div class="login-logo">
+            <img src="/images/logo.png" alt="VetStappen Logo">
+        </div>
+
+        <h2 class="login-title">Login to VetStappen</h2>
+        <p class="login-subtitle">
+            Don’t have an account yet? <a href="/register">Create one here.</a>
+        </p>
+
+        <form id="login-form" class="login-form" action="/login" method="POST">
+            <label>
+                Email
+                <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+            </label>
+
+            <label>
+                Password
+                <input type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+            </label>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Login</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="sample-accounts" aria-label="Developer test accounts">
+        <h3>Sample Accounts</h3>
+        <ul class="sample-account-list">
+            <li class="sample-account-item"><strong>User:</strong> mia@vetstappen.com / password1</li>
+            <li class="sample-account-item"><strong>User:</strong> carlo@vetstappen.com / password2</li>
+            <li class="sample-account-item"><strong>User:</strong> alyssa@vetstappen.com / password3</li>
+            <li class="sample-account-item"><strong>Staff:</strong> dr.bea@vetstappen.com / password4</li>
+            <li class="sample-account-item"><strong>Staff:</strong> dr.paolo@vetstappen.com / password5</li>
+        </ul>
+    </section>
+</main>

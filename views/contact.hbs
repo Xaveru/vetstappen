@@ -1,0 +1,41 @@
+<main>
+    <h1>Contact Us</h1>
+    <section class="panel">
+        <h2>Clinic Details</h2>
+        <ul class="info-list">
+            <li><strong>Address:</strong> 123 Pet Street, Makati City</li>
+            <li><strong>Phone:</strong> (632) 555-1234</li>
+            <li><strong>Email:</strong> info@vetstappen.com</li>
+            <li><strong>Hours:</strong> Mon-Sat, 9:00 AM - 6:00 PM</li>
+        </ul>
+    </section>
+
+    <section class="panel">
+        <h2>Send Us a Message</h2>
+        <form id="contact-form" class="form-grid" action="/contact" method="POST">
+            <label>
+                Name
+                <input type="text" name="name" minlength="2" maxlength="80" required>
+            </label>
+
+            <label>
+                Email
+                <input type="email" name="email" required>
+            </label>
+
+            <label class="full">
+                Message
+                <textarea name="message" rows="6" minlength="10" maxlength="1000" required></textarea>
+            </label>
+
+            <div class="form-actions full">
+                <button class="btn" type="submit">Send Message</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Map / Location Preview</h2>
+        <img class="media-placeholder" alt="Map Placeholder" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='960' height='420'><rect width='100%25' height='100%25' fill='%23f2f2f2'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='26' fill='%23999'>Clinic location preview placeholder</text></svg>">
+    </section>
+</main>

@@ -1,0 +1,165 @@
+<main>
+    <h1>Available Appointments</h1>
+    <p>
+        Search the next 7 days of clinic availability, then confirm your slot. Logged-in users can create account-linked reservations.
+        Visitors may still book anonymously and manage the booking later using the reservation reference code plus email.
+    </p>
+
+    <section class="panel">
+        <h2>Search for Available Slots</h2>
+        <form id="slot-search-form" class="form-grid" action="/appointments" method="GET">
+            <label>
+                Clinic
+                <select id="clinic-select" name="clinic">
+                    {{#each clinics}}
+                    <option value="{{_id}}" {{selected ../filters.clinic _id}}>{{name}} ({{location}})</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <label>
+                Date
+                <input id="date-input" name="date" type="date" value="{{filters.date}}">
+            </label>
+
+            <label>
+                Time
+                <select id="time-select" name="time">
+                    <option value="">Any</option>
+                    {{#each timeSlots}}
+                    <option value="{{this}}" {{selected ../filters.time this}}>{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <label>
+                Service
+                <select id="service-select" name="service">
+                    <option value="">Any</option>
+                    {{#each services}}
+                    <option value="{{this}}" {{selected ../filters.service this}}>{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Search</button>
+                <button class="btn btn-secondary" id="reset-search" type="button">Reset</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Slot Availability</h2>
+        {{#if selectedClinic}}
+        <p class="muted">Showing slots for <strong>{{selectedClinic.name}}</strong> in {{selectedClinic.location}}.</p>
+        {{/if}}
+
+        <div class="table-wrap">
+            <table class="data-table" aria-label="Available Appointment Slots">
+                <thead>
+                    <tr>
+                        <th>Clinic</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="appointments-body">
+                    {{#if slots.length}}
+                        {{#each slots}}
+                        <tr>
+                            <td>{{clinicName}}</td>
+                            <td>{{date}}</td>
+                            <td>{{time}}</td>
+                            <td>{{service}}</td>
+                            <td>
+                                {{#if isBooked}}
+                                <span class="status-badge status-cancelled-like">Booked</span>
+                                {{else}}
+                                <span class="status-badge status-booked">Available</span>
+                                {{/if}}
+                            </td>
+                            <td>
+                                {{#if isBooked}}
+                                    <button class="btn" type="button" disabled>Booked</button>
+                                {{else}}
+                                    <button
+                                        class="btn book-trigger"
+                                        type="button"
+                                        data-slot-id="{{slotId}}"
+                                        data-slot-summary="{{clinicName}} - {{date}} - {{time}} - {{service}}"
+                                        data-account-name="{{../accountName}}"
+                                        data-account-email="{{../accountEmail}}">
+                                        Book
+                                    </button>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{else}}
+                        <tr>
+                            <td colspan="6">No slots found for your current filters.</td>
+                        </tr>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="panel">
+        <h2>How Booking Works</h2>
+        <ul class="info-list">
+            <li><strong>Account-linked booking:</strong> available only when logged in. The reservation appears in <em>My Reservations</em>.</li>
+            <li><strong>Anonymous booking:</strong> available to any visitor. The app will generate a reservation reference code.</li>
+            <li><strong>Anonymous reservation management:</strong> use the same email and reference code on the Reservations page to edit or cancel it later.</li>
+        </ul>
+        <div class="page-actions">
+            <a class="btn btn-secondary" href="/reservations">Go to Reservations</a>
+        </div>
+    </section>
+
+    <dialog id="book-dialog" class="dialog">
+        <form id="book-slot-form" class="form-grid" action="/appointments/book" method="POST">
+            <h2 class="full">Confirm Booking</h2>
+            <p id="book-slot-summary" class="full muted">Select a slot first.</p>
+
+            <input type="hidden" name="slotId" id="book-slot-id">
+
+            {{#if canBookWithAccount}}
+            <label class="full checkbox multi-checkbox">
+                <input type="radio" name="bookingMode" value="account" checked>
+                Use my logged-in account ({{accountName}} / {{accountEmail}})
+            </label>
+            <label class="full checkbox multi-checkbox">
+                <input type="radio" name="bookingMode" value="anonymous">
+                Book anonymously instead
+            </label>
+            {{else}}
+            <input type="hidden" name="bookingMode" value="anonymous">
+            <p class="full muted">You are not logged in, so this booking will be treated as an anonymous reservation.</p>
+            {{/if}}
+
+            <div id="anonymous-booking-fields" class="full nested-panel {{#if canBookWithAccount}}hidden{{/if}}">
+                <label class="full">
+                    Owner Name
+                    <input type="text" name="ownerName" id="book-owner-name" maxlength="80" {{#unless canBookWithAccount}}required{{/unless}}>
+                </label>
+
+                <label class="full">
+                    Email for Reservation Lookup
+                    <input type="email" name="ownerEmail" id="book-owner-email" maxlength="120" {{#unless canBookWithAccount}}required{{/unless}}>
+                </label>
+
+                <p class="muted">Save the reference code after booking. You will need it together with this email to update or cancel the anonymous reservation later.</p>
+            </div>
+
+            <div class="form-actions full">
+                <button class="btn" type="submit">Confirm Booking</button>
+                <button class="btn btn-secondary" type="button" id="book-cancel">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+</main>

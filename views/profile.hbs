@@ -1,0 +1,58 @@
+<main>
+    <h1 class="profile-page-title">User Profile</h1>
+
+    <section class="panel">
+        <h2>My Profile</h2>
+
+        <form id="profile-form" class="form-grid" action="/profile" method="POST" enctype="multipart/form-data">
+            <div class="profile-avatar-section full">
+                <img id="profile-avatar-preview" class="avatar" alt="Profile picture preview" src="{{profileUser.avatarSrc}}">
+
+                <div class="avatar-controls">
+                    <label for="profile-avatar" class="btn btn-secondary">Change Profile Picture</label>
+                    <input type="file" id="profile-avatar" name="avatar" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+                    <small class="muted">Accepted types: JPG, PNG, GIF, WEBP. Max size: 2 MB.</small>
+                </div>
+            </div>
+
+            <label class="full">
+                Full Name
+                <input type="text" id="profile-name" name="name" value="{{profileUser.name}}" minlength="3" maxlength="80" required>
+            </label>
+
+            <label class="full">
+                Email
+                <input type="email" id="profile-email" value="{{profileUser.email}}" disabled>
+            </label>
+
+            <label class="full">
+                Description / Bio
+                <textarea id="profile-bio" name="bio" rows="5" maxlength="{{bioMaxLength}}" placeholder="Write something about yourself...">{{profileUser.bio}}</textarea>
+            </label>
+
+            <div class="form-actions full">
+                <button class="btn" type="submit">Save Profile</button>
+                <a class="btn btn-secondary" href="/reservations">Go to Reservations</a>
+                <a class="btn btn-secondary" href="/delete-account">Delete My Account</a>
+                {{#if profileUser.isStaff}}
+                <a class="btn btn-secondary" href="/staff">Staff Dashboard</a>
+                {{/if}}
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <h2>Public Profiles</h2>
+        <p class="muted">These sample profiles are visible to show the public user view requirement from the project proposal.</p>
+        <div class="card-grid">
+            {{#each publicUsers}}
+            <article class="team-card public-profile-card">
+                <img class="avatar" alt="{{name}} profile picture" src="{{avatarSrc}}">
+                <h3>{{name}}</h3>
+                <p><strong>{{roleLabel}}</strong></p>
+                <p>{{bio}}</p>
+            </article>
+            {{/each}}
+        </div>
+    </section>
+</main>

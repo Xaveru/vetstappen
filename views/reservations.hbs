@@ -1,0 +1,202 @@
+<main>
+    <h1>{{reservationTitle}}</h1>
+    <p>{{hint}}</p>
+
+    {{#if currentUser}}
+    <section class="panel">
+        <h2>{{reservationTitle}}</h2>
+        <div class="table-wrap">
+            <table class="data-table" aria-label="Reservations">
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Clinic</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reservations-body">
+                    {{#if reservations.length}}
+                        {{#each reservations}}
+                        <tr>
+                            <td>
+                                {{ownerLabel}}
+                                {{#if isWalkIn}}<span class="tag">Walk-in</span>{{/if}}
+                                {{#if isAnonymous}}<span class="tag">Anonymous</span>{{/if}}
+                            </td>
+                            <td>{{clinicId.name}}</td>
+                            <td>{{date}}</td>
+                            <td>{{time}}</td>
+                            <td>{{service}}</td>
+                            <td><span class="{{statusBadgeClass status}}">{{status}}</span></td>
+                            <td>
+                                {{#if editable}}
+                                    <button
+                                        class="btn edit-trigger"
+                                        type="button"
+                                        data-edit-path="{{editPath}}"
+                                        data-date="{{date}}"
+                                        data-time="{{time}}"
+                                        data-service="{{service}}"
+                                        data-lookup-email=""
+                                        data-lookup-reference="">
+                                        Edit
+                                    </button>
+                                    <form action="{{cancelPath}}" method="POST" class="inline-form action-inline">
+                                        <button class="btn btn-secondary" type="submit">Cancel</button>
+                                    </form>
+                                    {{#if showNoShow}}
+                                    <form action="/staff/reservations/{{_id}}/noshow" method="POST" class="inline-form action-inline">
+                                        <button class="btn btn-secondary" type="submit">No-show</button>
+                                    </form>
+                                    {{/if}}
+                                {{else}}
+                                    <span class="muted">No actions</span>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{else}}
+                        <tr>
+                            <td colspan="7">No reservations to show yet.</td>
+                        </tr>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="page-actions">
+            <a class="btn" href="/appointments">Book Another Appointment</a>
+            <a class="btn btn-secondary" href="/profile">Back to Profile</a>
+        </div>
+    </section>
+    {{else}}
+    <section class="panel narrow">
+        <h2>Need an account-linked reservation?</h2>
+        <p>Login to see bookings tied to your account. If you created an anonymous booking, use the lookup form below instead.</p>
+        <div class="page-actions">
+            <a class="btn" href="/login">Login</a>
+            <a class="btn btn-secondary" href="/register">Create Account</a>
+        </div>
+    </section>
+    {{/if}}
+
+    <section class="panel">
+        <h2>Find an Anonymous Reservation</h2>
+        <p>Enter the same email and reference code used during booking to review, edit, or cancel the anonymous reservation.</p>
+        <form class="form-grid" action="/reservations" method="GET">
+            <label>
+                Email
+                <input type="email" name="lookupEmail" value="{{anonymousLookup.email}}" required>
+            </label>
+            <label>
+                Reference Code
+                <input type="text" name="lookupReference" value="{{anonymousLookup.referenceCode}}" maxlength="20" required>
+            </label>
+            <div class="form-actions">
+                <button class="btn" type="submit">Find Reservation</button>
+                <a class="btn btn-secondary" href="/reservations">Clear</a>
+            </div>
+        </form>
+
+        {{#if showLookupResult}}
+        <div class="table-wrap top-gap">
+            <table class="data-table" aria-label="Anonymous Reservation Results">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Owner</th>
+                        <th>Clinic</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#if anonymousLookup.reservations.length}}
+                        {{#each anonymousLookup.reservations}}
+                        <tr>
+                            <td><strong>{{referenceCode}}</strong></td>
+                            <td>{{ownerLabel}}</td>
+                            <td>{{clinicId.name}}</td>
+                            <td>{{date}}</td>
+                            <td>{{time}}</td>
+                            <td>{{service}}</td>
+                            <td><span class="{{statusBadgeClass status}}">{{status}}</span></td>
+                            <td>
+                                {{#if editable}}
+                                    <button
+                                        class="btn edit-trigger"
+                                        type="button"
+                                        data-edit-path="{{editPath}}"
+                                        data-date="{{date}}"
+                                        data-time="{{time}}"
+                                        data-service="{{service}}"
+                                        data-lookup-email="{{lookupEmail}}"
+                                        data-lookup-reference="{{lookupReference}}">
+                                        Edit
+                                    </button>
+                                    <form action="{{cancelPath}}" method="POST" class="inline-form action-inline">
+                                        <input type="hidden" name="lookupEmail" value="{{lookupEmail}}">
+                                        <input type="hidden" name="lookupReference" value="{{lookupReference}}">
+                                        <button class="btn btn-secondary" type="submit">Cancel</button>
+                                    </form>
+                                {{else}}
+                                    <span class="muted">No actions</span>
+                                {{/if}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{else}}
+                        <tr>
+                            <td colspan="8">No anonymous reservation matched the provided email and reference code.</td>
+                        </tr>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+        {{/if}}
+    </section>
+
+    <dialog id="edit-dialog" class="dialog">
+        <form method="POST" id="edit-form" class="form-grid" action="/reservations/placeholder/edit">
+            <h2 class="full">Edit Reservation</h2>
+
+            <input type="hidden" name="lookupEmail" id="edit-lookup-email" value="">
+            <input type="hidden" name="lookupReference" id="edit-lookup-reference" value="">
+
+            <label class="full">
+                Date
+                <input type="date" id="edit-date" name="date" required>
+            </label>
+
+            <label class="full">
+                Time
+                <select id="edit-time" name="time" required>
+                    {{#each timeSlots}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <label class="full">
+                Service
+                <select id="edit-service" name="service" required>
+                    {{#each services}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <div class="form-actions full">
+                <button class="btn" value="save" id="edit-save" type="submit">Save</button>
+                <button class="btn btn-secondary" value="cancel" type="button" id="edit-cancel">Cancel</button>
+            </div>
+        </form>
+    </dialog>
+</main>

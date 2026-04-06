@@ -1,0 +1,17 @@
+<main>
+    <h1>Delete Account</h1>
+    <section class="panel narrow">
+        <h2>Confirm Deletion</h2>
+        <div id="delete-hint" class="muted">{{hint}}</div>
+        <form action="/delete-account" method="POST" class="form-grid top-gap">
+            <label class="full">
+                Type <strong>DELETE</strong> to confirm
+                <input type="text" name="confirmDelete" id="confirm-delete" maxlength="10" required>
+            </label>
+            <div class="form-actions full">
+                <button class="btn danger" id="delete-account-btn" type="submit">Delete My Account Permanently</button>
+                <a class="btn btn-secondary" href="/profile">Back to Profile</a>
+            </div>
+        </form>
+    </section>
+</main>

@@ -1,0 +1,123 @@
+<main>
+    <h1>Staff Dashboard</h1>
+    <div id="staff-locked" class="panel {{#if currentUser.isStaff}}hidden{{/if}}">
+        <h2>Staff Access Required</h2>
+        <p class="muted">
+            Please login with a staff account to use this page.
+            Sample staff login: <strong>dr.bea@vetstappen.com</strong> / <strong>password4</strong>
+        </p>
+        <a class="btn" href="/login">Go to Login</a>
+    </div>
+
+    <section id="staff-tools" class="panel {{#unless currentUser.isStaff}}hidden{{/unless}}">
+        <h2>Walk-in Appointment Management</h2>
+
+        {{#if stats}}
+        <div class="stats-grid">
+            <article class="panel stat-card"><strong>{{stats.total}}</strong><span>Total Records</span></article>
+            <article class="panel stat-card"><strong>{{stats.booked}}</strong><span>Booked</span></article>
+            <article class="panel stat-card"><strong>{{stats.cancelled}}</strong><span>Cancelled</span></article>
+            <article class="panel stat-card"><strong>{{stats.noShow}}</strong><span>No-show</span></article>
+        </div>
+        {{/if}}
+
+        <form id="walkin-form" class="form-grid" action="/staff/walkin" method="POST">
+            <label>
+                Client Name
+                <input type="text" id="walkin-name" name="ownerName" maxlength="80" required>
+            </label>
+
+            <label>
+                Clinic
+                <select id="walkin-clinic" name="clinicId" required>
+                    {{#each clinics}}
+                    <option value="{{_id}}">{{name}} ({{location}})</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <label>
+                Date
+                <input type="date" id="walkin-date" name="date" value="{{today}}" required>
+            </label>
+
+            <label>
+                Time
+                <select id="walkin-time" name="time" required>
+                    {{#each timeSlots}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <label>
+                Service
+                <select id="walkin-service" name="service" required>
+                    {{#each services}}
+                    <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+            </label>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Add Walk-in</button>
+                <button class="btn btn-secondary" type="reset">Clear</button>
+            </div>
+        </form>
+
+        <h3>Upcoming Appointments</h3>
+        <div class="table-wrap">
+            <table class="data-table" aria-label="Staff Appointment List">
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Clinic</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="staff-appointments-body">
+                    {{#if reservations.length}}
+                        {{#each reservations}}
+                        <tr>
+                            <td>
+                                {{ownerLabel}}
+                                {{#if isWalkIn}}<span class="tag">Walk-in</span>{{/if}}
+                            </td>
+                            <td>{{clinicId.name}}</td>
+                            <td>{{date}}</td>
+                            <td>{{time}}</td>
+                            <td>{{service}}</td>
+                            <td><span class="{{statusBadgeClass status}}">{{status}}</span></td>
+                            <td>
+                                {{#if allowNoShow}}
+                                <form action="/staff/reservations/{{_id}}/noshow" method="POST" class="inline-form action-inline">
+                                    <button class="btn btn-secondary" type="submit">No-show</button>
+                                </form>
+                                {{/if}}
+                                {{#if allowCancel}}
+                                <form action="/staff/reservations/{{_id}}/cancel" method="POST" class="inline-form action-inline">
+                                    <button class="btn btn-secondary" type="submit">Cancel</button>
+                                </form>
+                                {{/if}}
+                                {{#unless allowNoShow}}
+                                {{#unless allowCancel}}
+                                <span class="muted">No actions</span>
+                                {{/unless}}
+                                {{/unless}}
+                            </td>
+                        </tr>
+                        {{/each}}
+                    {{else}}
+                        <tr>
+                            <td colspan="7">No appointments to show yet.</td>
+                        </tr>
+                    {{/if}}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

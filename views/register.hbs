@@ -1,0 +1,38 @@
+<main class="auth-main">
+    <section class="panel narrow login-panel">
+        <div class="login-logo">
+            <img src="/images/logo.png" alt="VetStappen Logo">
+        </div>
+
+        <h2 class="login-title">Create Your Account</h2>
+        <p class="login-subtitle">
+            Already registered? <a href="/login">Login here.</a>
+        </p>
+
+        <form id="register-form" class="login-form" action="/register" method="POST">
+            <label>
+                Full Name
+                <input type="text" name="fullname" placeholder="Enter your full name" minlength="3" maxlength="80" required>
+            </label>
+
+            <label>
+                Email
+                <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+            </label>
+
+            <label>
+                Password
+                <input type="password" name="password" placeholder="At least 8 characters with letters and numbers" minlength="8" pattern="(?=.*[A-Za-z])(?=.*\d).{8,}" autocomplete="new-password" required>
+            </label>
+
+            <label>
+                Confirm Password
+                <input type="password" name="confirm" placeholder="Re-enter your password" minlength="8" autocomplete="new-password" required>
+            </label>
+
+            <div class="form-actions">
+                <button class="btn" type="submit">Register</button>
+            </div>
+        </form>
+    </section>
+</main>
