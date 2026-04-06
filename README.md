@@ -506,7 +506,7 @@ The easiest student-friendly deployment path is:
 
 ## Known limitations
 
-- This zip does **not** include a live deployed URL because deployment needs your own GitHub/Render/Atlas accounts and credentials.
+- Live deployed URL: https://vetstappen.onrender.com.
 - Avatar uploads are stored locally, so they are less durable on some hosting platforms.
 - Slot availability is generated from a fixed schedule pattern instead of a fully editable admin schedule builder.
 - Contact messages are validated but not stored in the database because the main project scope focuses on reservation management.
